@@ -5,7 +5,7 @@ const user = mongoose.Schema(
         username:{
             type : String,
             require : true,
-            unique : true
+            
         } ,
         email:{
             type : String,
@@ -17,10 +17,16 @@ const user = mongoose.Schema(
             type : String,
             require : true,
 
-        }
+        },
+        otp:{
+            type : Number, 
+            default : 0
+
+        },
 
 
     } ,
+    
     {
         timestamps:true
     }

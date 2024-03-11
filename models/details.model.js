@@ -24,6 +24,10 @@ const detail = mongoose.Schema(
         email:{
             type : String,
             
+        } , 
+        username:{
+            type :String
+
         }
 
 

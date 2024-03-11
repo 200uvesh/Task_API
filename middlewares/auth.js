@@ -3,11 +3,10 @@ const jwt= require("jsonwebtoken")
 
 const verifyToken=async function(req , res , next){
 
-   // const token = req.params.id;
-//    const token = req.cookies.jwtToken || 
-    const token = req.header("Authorization")?.replace("Bearer ", "") || req.cookies.jwtToken
- 
-   console.log(token)
+   
+    //const token = req.cookies.jwtToken 
+    const token = req.header("Authorization")?.replace("Bearer ", "")  
+//    console.log(token)
    if(!token){
        return res.status(400).json(
            {
@@ -27,9 +26,12 @@ const verifyToken=async function(req , res , next){
            console.log(payload)
           
             req.details=payload
+            
            next()
 
        }        
 })
 }
 module.exports = verifyToken
+
+
