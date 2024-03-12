@@ -33,7 +33,7 @@ app.use("/" , viewRoute)
 
 
 //listner
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 6543
 app.listen(PORT ,()=>{
     console.log(` Server  created sucessfully !! http://localhost:${PORT}`)
 })
