@@ -1,9 +1,9 @@
 require("dotenv").config()
-const User = require("../models/user.model.js")
-const addDetail = require("../models/details.model.js")
+const User = require("../../models/user.model.js")
+const addDetail = require("../../models/details.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const {sendResetPasswordMail} = require("../utils/sendMail.js")
+const {sendResetPasswordMail} = require("../../utils/sendMail.js")
 
 
 //Register
@@ -54,8 +54,8 @@ exports.register=  async(req , res)=>{
                         })
                       console.log("Cookies Set Sucessfully")
                       console.log(token)
-                     
-                      res.status(200).json({message:"Register Sucess !! " , createdUser})
+                      res.redirect("/addDetails")
+                    //   res.status(200).json({message:"Register Sucess !! " , createdUser})
                      
                     
                   } )
@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
         }
         else {
 
-             console.log("Top")
+     
             const data = await User.findOne({email:email})
 
 
@@ -136,7 +136,8 @@ exports.login = async (req, res) => {
 
                     console.log("Login Sucess")
 
-                    res.status(200).json({ message: "Login Sucess !!", loggedUser })
+                    res.redirect("/userPage")
+                    // res.status(200).json({ message: "Login Sucess !!", loggedUser })
                    
                 }
                 else {
@@ -193,8 +194,8 @@ exports.addDetail = async (req, res) => {
 
 
 
-            //res.redirect("/userPage")
-            res.status(200).send({ message: "Personal Details saved sucessfull !!", details })
+            res.redirect("/userPage")
+            // res.status(200).send({ message: "Personal Details saved sucessfull !!", details })
         }
     }
     catch (error) {
@@ -353,7 +354,8 @@ exports.deleteUser = async (req, res) => {
             await User.findByIdAndDelete(req.details._id)
             await addDetail.deleteOne({ email: registerData.email })
             res.clearCookie("jwtToken")
-            res.status(201).json({ message: "Account delete Sucesfully" })
+            res.redirect('/register')
+            // res.status(201).json({ message: "Account delete Sucesfully" })
 
         }
     }
@@ -373,7 +375,8 @@ exports.logout = async (req, res) => {
     try {
         res.clearCookie("jwtToken")
         console.log("Logout Sucess!! ")
-        res.status(201).json({message:"You Have Logout Sucessfully !!"})
+        res.redirect('/register')
+       // res.status(201).json({message:"You Have Logout Sucessfully !!"})
         
     } catch (error) {
         console.log({message:"Something Went Wrong"})
@@ -392,7 +395,9 @@ exports.logout = async (req, res) => {
 exports.forgotPassword = async(req , res)=>{
     try{
          const {email} = req.body
+         console.log(email)
         const registerData = await User.findOne({email:email})
+        console.log(registerData)
         console.log(registerData._id)
         if(registerData){
            // Generate a random 4-digit number
@@ -404,7 +409,9 @@ exports.forgotPassword = async(req , res)=>{
 
               await  User.updateOne({email:email} ,{$set:{otp:otp}})
            sendResetPasswordMail( email , otp , registerData._id )
-           res.status(201).json({message:"Email Send Sucessfully !!"})
+           console.log(registerData._id,"registerData._id")
+          // res.status(201).json({message:"Email Send Sucessfully !!"})
+          res.redirect(`/resetPassword?_id=${registerData._id}`)
         }
         else{
             console.log("Email is not Defined")
@@ -424,15 +431,18 @@ exports.forgotPassword = async(req , res)=>{
 //Reset Password
 exports.resetPassword = async (req , res)=>{
     try {
-        const {otp , _id , newPassword} = req.body
+        console.log("I am in Reset password API")
+        const {otp ,newPassword , _id} = req.body
+        console.log(req.query._id) 
         const RegisterUser = await User.findById(_id)
+        
         if(!RegisterUser){
             console.log("User _id or password is not matched")
             res.status(300).json({message:"User _id or password is not matched"})
 
         }
         else{
-            if(otp===RegisterUser.otp){
+            if(RegisterUser.otp == otp){
                console.log("Otp is matched")
                await User.findByIdAndUpdate(_id , {$set:{password: bcrypt.hashSync(newPassword) , otp:0}})
                console.log("Below the Update OTP")

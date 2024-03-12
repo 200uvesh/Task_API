@@ -26,6 +26,7 @@ exports.sendResetPasswordMail= async ( email , otp , _id)=>{
         text: "Hello Welcome to the  world of API's  !! ",
         html : '<p> Hii   , Please copy the OTP '+otp+'   and ID is '+_id+' to  reset your password </p>',
         
+        
        }
 
        transporter.sendMail(mailContent , (error , info)=>{
