@@ -19,7 +19,7 @@ api_secret:  process.env.api_secret
 
 
 
-const uploadOnCloudinary = async (localFilePath) => {
+exports.uploadOnCloudinary = async (localFilePath) => {
     try {
         if (!localFilePath) return null
         //upload the file on cloudinary
@@ -36,5 +36,4 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
-
- module.exports = uploadOnCloudinary
+ 

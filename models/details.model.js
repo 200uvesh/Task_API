@@ -25,6 +25,13 @@ const detail = mongoose.Schema(
             type : String,
             
         } , 
+        // owner:{
+        //     type: Schema.Types.ObjectId,
+        //     ref: "User"
+            
+        // }
+        // access by Details.owner.email
+         
         username:{
             type :String
 

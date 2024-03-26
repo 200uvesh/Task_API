@@ -4,7 +4,7 @@ const addDetail = require("../../models/details.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {sendResetPasswordMail} = require("../../utils/sendMail.js")
-const uploadOnCloudinary = require("./utils/cloudnary.js")
+const {uploadOnCloudinary} = require("../../utils/cloudnary.js")
 // const upload = require("../../middlewares/upload.js")
  
 
@@ -472,11 +472,11 @@ exports.resetPassword = async (req , res)=>{
 //Upload File using Multer and Cloudnary
 
 exports.uploadFile = async(req , res)=>{
-    console.log("I am in  uploadFile Controller")
+    
     try {
         
             // Handle the uploaded file
-            console.log("i Am In Try block")
+             
             console.log(req.file.path)
             const imagePath = req.file.path
             const response =  await uploadOnCloudinary(imagePath)
@@ -484,19 +484,22 @@ exports.uploadFile = async(req , res)=>{
             const registerDetails = await User.findById(req.details._id).select("-password")
         const
             { email } = registerDetails
-        console.log(email)
 
-
-        const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:imagePath}})
+        const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
 
             res.status(201).json({ message: 'File uploaded successfully!'  , personalDetails});
           }
     
 
-catch (error) {
+  catch (error) {
         console.log("I am in Catch block")
         console.log("Something Went Wrong : "+ error)
         
     }
 
 }
+
+
+// Credentials 
+//export CLOUDINARY_URL=cloudinary://823317268528185:KFufg2IoLMRFBnrDccF0ldJVwa8@doyzrpatw
+
