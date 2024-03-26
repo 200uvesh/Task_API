@@ -29,6 +29,13 @@ const detail = mongoose.Schema(
             type :String
 
         }
+        ,
+        image: {
+            type: String, // cloudinary url
+            default : ""
+             
+        },
+
 
 
     } ,

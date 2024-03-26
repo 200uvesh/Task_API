@@ -4,7 +4,9 @@ const addDetail = require("../../models/details.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {sendResetPasswordMail} = require("../../utils/sendMail.js")
+const uploadOnCloudinary = require("./utils/cloudnary.js")
 // const upload = require("../../middlewares/upload.js")
+ 
 
 
 //Register
@@ -467,7 +469,7 @@ exports.resetPassword = async (req , res)=>{
  
 
 
-//Upload File 
+//Upload File using Multer and Cloudnary
 
 exports.uploadFile = async(req , res)=>{
     console.log("I am in  uploadFile Controller")
@@ -475,8 +477,19 @@ exports.uploadFile = async(req , res)=>{
         
             // Handle the uploaded file
             console.log("i Am In Try block")
-            console.log(req.file)
-            res.status(201).json({ message: 'File uploaded successfully!' });
+            console.log(req.file.path)
+            const imagePath = req.file.path
+            const response =  await uploadOnCloudinary(imagePath)
+            console.log(response.url)
+            const registerDetails = await User.findById(req.details._id).select("-password")
+        const
+            { email } = registerDetails
+        console.log(email)
+
+
+        const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:imagePath}})
+
+            res.status(201).json({ message: 'File uploaded successfully!'  , personalDetails});
           }
     
 
