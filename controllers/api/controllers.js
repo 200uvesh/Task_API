@@ -4,7 +4,7 @@ const addDetail = require("../../models/details.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {sendResetPasswordMail} = require("../../utils/sendMail.js")
-const {uploadOnCloudinary} = require("../../utils/cloudnary.js")
+const {uploadOnCloudinary , deleteOnCloudnary} = require("../../utils/cloudnary.js")
 // const upload = require("../../middlewares/upload.js")
  
 
@@ -469,9 +469,10 @@ exports.resetPassword = async (req , res)=>{
  
 
 
-//Upload File using Multer and Cloudnary
 
-exports.uploadFile = async(req , res)=>{
+
+//add Profile Picture using Multer and Cloudnary
+exports.addProfilePicture = async(req , res)=>{
     
     try {
         
@@ -487,17 +488,80 @@ exports.uploadFile = async(req , res)=>{
 
         const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
 
-            res.status(201).json({ message: 'File uploaded successfully!'  , personalDetails});
+            res.status(201).json({ message: 'Profile picture uploaded successfully!'  , personalDetails});
           }
     
 
   catch (error) {
-        console.log("I am in Catch block")
+        
         console.log("Something Went Wrong : "+ error)
         
     }
 
 }
+
+
+
+//update Profile Picture using Multer and Cloudnary
+exports.updateProfilePicture = async(req , res)=>{
+    try {
+        
+        // Handle the uploaded file
+        const registerDetails = await User.findById(req.details._id).select("-password")
+        await deleteOnCloudnary(registerDetails.image)
+        console.log(req.file.path)
+        const imagePath = req.file.path
+        const response =  await uploadOnCloudinary(imagePath)
+        console.log(response.url)
+         
+    const
+        { email } = registerDetails
+
+    const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
+
+        res.status(201).json({ message: 'Profile Picture updated successfully!'  , personalDetails});
+      }
+
+
+catch (error) {
+    
+    console.log("Something Went Wrong : "+ error)
+    
+}
+
+}
+
+
+
+
+//remove Profile Picture using Multer and Cloudnary
+exports.removeProfilePicture = async(req , res)=>{
+    try {
+        
+        // Handle the uploaded file
+        const registerDetails = await User.findById(req.details._id).select("-password")
+        await deleteOnCloudnary(registerDetails.image)
+        console.log(response.url)
+         
+    const
+        { email } = registerDetails
+
+    const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:""}})
+
+        res.status(201).json({ message: 'Profile Picture Removed successfully!'  , personalDetails});
+      }
+
+
+catch (error) {
+    
+    console.log("Something Went Wrong : "+ error)
+    
+}
+
+
+}
+
+
 
 
 // Credentials 

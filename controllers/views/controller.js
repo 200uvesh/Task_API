@@ -71,8 +71,19 @@ exports.resetPassword = async (req , res)=>{
     res.render('resetPassword')
 }
 
-// Uploading files 
 
-exports.uploadFile = async(req , res)=>{
-    res.render('uploadFile')
+
+// Uploading , updating , removing Profile Picture using Multer and Cloudnary 
+
+exports.addProfilePicture = async(req , res)=>{
+    res.render('addProfilePicture')
 }
+
+exports.updateProfilePicture = async(req , res)=>{
+    res.render('updateProfilePicture')
+}
+
+exports.removeProfilePicture = async(req , res)=>{
+    res.render('removeProfilePicture')
+}
+

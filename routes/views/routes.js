@@ -1,7 +1,7 @@
 const expres = require("express")
 const router = expres.Router()
 
-const {homePage , register , login , addDetails  , userPage  , updateDetails  , deleteUser , logout , updateUsername ,updateEmail , updatePassword , getDetails , forgotPassword , resetPassword  , getUserDetails , uploadFile} = require("../../controllers/views/controller")
+const {homePage , register , login , addDetails  , userPage  , updateDetails  , deleteUser , logout , updateUsername ,updateEmail , updatePassword , getDetails , forgotPassword , resetPassword  , getUserDetails , addProfilePicture , updateProfilePicture  , removeProfilePicture} = require("../../controllers/views/controller")
 
 //HomePages
 router.get('/' , getDetails)
@@ -26,7 +26,9 @@ router.get("/forgotPassword" , forgotPassword)
 router.get("/resetPassword" , resetPassword)
 
 //Uploading File
-router.get("/uploadFile" , uploadFile)
+router.get("/addProfilePicture" , addProfilePicture)
+router.get("/updateProfilePicture" , updateProfilePicture)
+router.get("/removeProfilePicture" , removeProfilePicture)
 
 
 

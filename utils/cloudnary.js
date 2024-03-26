@@ -1,8 +1,5 @@
 require("dotenv").config()
 const cloudinary = require('cloudinary');
-console.log(process.env.cloud_name)
-console.log(process.env.api_key)
-console.log(process.env.api_secret)
 cloudinary.config({
 cloud_name: process.env.cloud_name,
 api_key: process.env.api_key,
@@ -10,15 +7,7 @@ api_secret:  process.env.api_secret
 })
  
  
-
-// cloudinary.uploader.upload( `cloudinary://${process.env.api_key}:${process.env.api_secret}@${process.env.cloud_name}`,
-//   { public_id: "olympic_flag" }, 
-//   function(error, result) {console.log(result); });
-
-//export CLOUDINARY_URL=cloudinary://823317268528185:KFufg2IoLMRFBnrDccF0ldJVwa8@doyzrpatw
-
-
-
+// upload file on cloudnary
 exports.uploadOnCloudinary = async (localFilePath) => {
     try {
         if (!localFilePath) return null
@@ -36,4 +25,19 @@ exports.uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
+
+
+// for delete file  from cloudnary
+exports.deleteOnCloudnary = async (localFilePath)=>{
+    cloudinary.uploader
+.destroy(localFilePath)
+.then(result => console.log(result));
+}
+
  
+ 
+// cloudinary.uploader.upload( `cloudinary://${process.env.api_key}:${process.env.api_secret}@${process.env.cloud_name}`,
+//   { public_id: "olympic_flag" }, 
+//   function(error, result) {console.log(result); });
+
+//export CLOUDINARY_URL=cloudinary://823317268528185:KFufg2IoLMRFBnrDccF0ldJVwa8@doyzrpatw
