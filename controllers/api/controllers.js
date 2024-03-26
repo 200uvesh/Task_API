@@ -4,6 +4,7 @@ const addDetail = require("../../models/details.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {sendResetPasswordMail} = require("../../utils/sendMail.js")
+// const upload = require("../../middlewares/upload.js")
 
 
 //Register
@@ -329,7 +330,6 @@ exports.updatePassword = async (req, res) => {
 
     }
 
-
 }
 
 
@@ -369,7 +369,6 @@ exports.deleteUser = async (req, res) => {
 
 
 
-
 //logout
 exports.logout = async (req, res) => {
     try {
@@ -389,8 +388,6 @@ exports.logout = async (req, res) => {
 
  
 
- 
-
 // forgotPassword 
 exports.forgotPassword = async(req , res)=>{
     try{
@@ -407,10 +404,10 @@ exports.forgotPassword = async(req , res)=>{
                  const otp = generateOTP();
                  console.log(otp)
 
-              await  User.updateOne({email:email} ,{$set:{otp:otp}})
-           sendResetPasswordMail( email , otp , registerData._id )
-           console.log(registerData._id,"registerData._id")
-          // res.status(201).json({message:"Email Send Sucessfully !!"})
+            await  User.updateOne({email:email} ,{$set:{otp:otp}})
+            sendResetPasswordMail( email , otp , registerData._id )
+           console.log(registerData._id)
+        //   res.status(201).json({message:"Email Send Sucessfully !!"} )
           res.redirect(`/resetPassword?_id=${registerData._id}`)
         }
         else{
@@ -469,3 +466,24 @@ exports.resetPassword = async (req , res)=>{
 }
  
 
+
+//Upload File 
+
+exports.uploadFile = async(req , res)=>{
+    console.log("I am in  uploadFile Controller")
+    try {
+        
+            // Handle the uploaded file
+            console.log("i Am In Try block")
+            console.log(req.file)
+            res.status(201).json({ message: 'File uploaded successfully!' });
+          }
+    
+
+catch (error) {
+        console.log("I am in Catch block")
+        console.log("Something Went Wrong : "+ error)
+        
+    }
+
+}

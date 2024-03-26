@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const  {register, login, addDetail, getDetails, updateUsername, updateEmail, updatePassword, deleteUser, logout, forgotPassword, resetPassword}= require("../../controllers/api/controllers.js")
+const  {register, login, addDetail, getDetails, updateUsername, updateEmail, updatePassword, deleteUser, logout, forgotPassword, resetPassword , uploadFile}= require("../../controllers/api/controllers.js")
 const isAuthorised = require("../../middlewares/auth.js")
 
 
@@ -18,8 +18,8 @@ router.get("/logout" ,isAuthorised , logout)
 router.post("/forgotPassword" , forgotPassword)
 router.post("/resetPassword" , resetPassword)
 
-
-
+const upload = require("../../middlewares/upload.js")
+router.post('/uploadFile', upload.single('file') , uploadFile )
 
 
 

@@ -22,6 +22,7 @@ app.use(express.urlencoded({extended:true}))
 app.set("view engine" , "ejs")
 
 
+
 //UserRoute
 const userRoute = require("./routes/api/routes.js")
 app.use("/api" , userRoute)
@@ -31,6 +32,10 @@ app.use("/api" , userRoute)
 const viewRoute = require("./routes/views/routes.js")
 app.use("/" , viewRoute)
 
+
+// Check 
+// const uploadOnCloudinary = require("./utils/cloudnary.js")
+// uploadOnCloudinary('/home/uvesh/Downloads/Profile1.jpg')
 
 //listner
 const PORT = process.env.PORT || 6543

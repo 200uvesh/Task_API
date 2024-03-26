@@ -70,3 +70,9 @@ exports.forgotPassword = async(req , res)=>{
 exports.resetPassword = async (req , res)=>{
     res.render('resetPassword')
 }
+
+// Uploading files 
+
+exports.uploadFile = async(req , res)=>{
+    res.render('uploadFile')
+}
