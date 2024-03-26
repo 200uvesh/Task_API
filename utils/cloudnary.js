@@ -1,3 +1,5 @@
+//Cloudnary Logic  :-
+
 require("dotenv").config()
 const cloudinary = require('cloudinary');
 cloudinary.config({
@@ -21,7 +23,7 @@ exports.uploadOnCloudinary = async (localFilePath) => {
 
     } catch (error) {
          
-         console.log("Error: "+ error)
+         console.log("Something went Wrong : "+ error)
     }
 }
 
@@ -41,3 +43,4 @@ exports.deleteOnCloudnary = async (localFilePath)=>{
 //   function(error, result) {console.log(result); });
 
 //export CLOUDINARY_URL=cloudinary://823317268528185:KFufg2IoLMRFBnrDccF0ldJVwa8@doyzrpatw
+

@@ -475,8 +475,6 @@ exports.resetPassword = async (req , res)=>{
 exports.addProfilePicture = async(req , res)=>{
     
     try {
-        
-            // Handle the uploaded file
              
             console.log(req.file.path)
             const imagePath = req.file.path
@@ -495,6 +493,7 @@ exports.addProfilePicture = async(req , res)=>{
   catch (error) {
         
         console.log("Something Went Wrong : "+ error)
+        res.status(400).json({message:"Something Went Wrong :" , error})
         
     }
 
@@ -506,7 +505,6 @@ exports.addProfilePicture = async(req , res)=>{
 exports.updateProfilePicture = async(req , res)=>{
     try {
         
-        // Handle the uploaded file
         const registerDetails = await User.findById(req.details._id).select("-password")
         await deleteOnCloudnary(registerDetails.image)
         console.log(req.file.path)
@@ -526,6 +524,7 @@ exports.updateProfilePicture = async(req , res)=>{
 catch (error) {
     
     console.log("Something Went Wrong : "+ error)
+    res.status(400).json({message:"Something Went Wrong :" , error})
     
 }
 
@@ -537,8 +536,7 @@ catch (error) {
 //remove Profile Picture using Multer and Cloudnary
 exports.removeProfilePicture = async(req , res)=>{
     try {
-        
-        // Handle the uploaded file
+         
         const registerDetails = await User.findById(req.details._id).select("-password")
         await deleteOnCloudnary(registerDetails.image)
         console.log(response.url)
@@ -555,6 +553,7 @@ exports.removeProfilePicture = async(req , res)=>{
 catch (error) {
     
     console.log("Something Went Wrong : "+ error)
+    res.status(400).json({message:"Something Went Wrong :" , error})
     
 }
 
