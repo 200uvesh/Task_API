@@ -19,7 +19,7 @@ router.post("/forgotPassword" , forgotPassword)
 router.post("/resetPassword" , resetPassword)
 
 const upload = require("../../middlewares/upload.js")
-router.post('/uploadFile', upload.single('file') , uploadFile )
+router.post('/uploadFile', isAuthorised, upload.single('file') , uploadFile )
 
 
 
