@@ -9,8 +9,7 @@ const {uploadOnCloudinary , deleteOnCloudnary} = require("../../utils/cloudnary.
  
 
 
-//Register
- 
+//Register API
 exports.register=  async(req , res)=>{
     const {username , email , password} = req.body
     console.log(username , email , password)
@@ -79,7 +78,7 @@ exports.register=  async(req , res)=>{
 
 
 
-//Login
+//Login API
 exports.login = async (req, res) => {
     try {
 
@@ -165,7 +164,7 @@ exports.login = async (req, res) => {
 }
 
 
-//Add Details
+//Add Details API
 exports.addDetail = async (req, res) => {
     try {
         const { fullName, address, pincode, age } = req.body
@@ -209,7 +208,7 @@ exports.addDetail = async (req, res) => {
 }
 
 
-// get details 
+// get details API
 exports.getDetails = async (req, res) => {
 
     try {
@@ -240,7 +239,7 @@ exports.getDetails = async (req, res) => {
 
 
 
-// Update username 
+// Update username API
 exports.updateUsername = async (req, res) => {
 
     try {
@@ -268,7 +267,7 @@ exports.updateUsername = async (req, res) => {
 }
 
 
-// update email
+// update email API
 exports.updateEmail = async (req, res) => {
 
     try {
@@ -301,7 +300,7 @@ exports.updateEmail = async (req, res) => {
 
 
 
-// update password
+// update password API
 exports.updatePassword = async (req, res) => {
 
     try {
@@ -336,7 +335,7 @@ exports.updatePassword = async (req, res) => {
 
 
 
-//delete user
+//delete user API
 exports.deleteUser = async (req, res) => {
     
     try {
@@ -371,7 +370,7 @@ exports.deleteUser = async (req, res) => {
 
 
 
-//logout
+//logout API
 exports.logout = async (req, res) => {
     try {
         res.clearCookie("jwtToken")
@@ -390,7 +389,7 @@ exports.logout = async (req, res) => {
 
  
 
-// forgotPassword 
+// forgotPassword API
 exports.forgotPassword = async(req , res)=>{
     try{
          const {email} = req.body
@@ -427,7 +426,7 @@ exports.forgotPassword = async(req , res)=>{
 
 }
 
-//Reset Password
+//Reset Password API
 exports.resetPassword = async (req , res)=>{
     try {
         console.log("I am in Reset password API")
@@ -471,7 +470,7 @@ exports.resetPassword = async (req , res)=>{
 
 
 
-//add Profile Picture using Multer and Cloudnary
+//add Profile Picture API
 exports.addProfilePicture = async(req , res)=>{
     
     try {
@@ -501,7 +500,7 @@ exports.addProfilePicture = async(req , res)=>{
 
 
 
-//update Profile Picture using Multer and Cloudnary
+//update Profile Picture API
 exports.updateProfilePicture = async(req , res)=>{
     try {
         
@@ -533,7 +532,7 @@ catch (error) {
 
 
 
-//remove Profile Picture using Multer and Cloudnary
+//remove Profile Picture API
 exports.removeProfilePicture = async(req , res)=>{
     try {
          
@@ -559,7 +558,6 @@ catch (error) {
 
 
 }
-
 
 
 

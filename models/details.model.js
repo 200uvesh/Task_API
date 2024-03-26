@@ -30,7 +30,7 @@ const detail = mongoose.Schema(
         //     ref: "User"
             
         // }
-        // access by Details.owner.email
+        // access by Details.owner.email , prediction
          
         username:{
             type :String

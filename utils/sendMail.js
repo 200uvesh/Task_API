@@ -45,3 +45,7 @@ exports.sendResetPasswordMail= async ( email , otp , _id)=>{
         
     }
      };
+
+
+     // Reset Password Link:
+     

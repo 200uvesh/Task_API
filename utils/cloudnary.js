@@ -28,8 +28,7 @@ exports.uploadOnCloudinary = async (localFilePath) => {
 }
 
 
-
-// for delete file  from cloudnary
+// for delete file  from cloudnary 
 exports.deleteOnCloudnary = async (localFilePath)=>{
     cloudinary.uploader
 .destroy(localFilePath)
