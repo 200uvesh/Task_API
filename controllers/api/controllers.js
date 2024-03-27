@@ -13,10 +13,10 @@ const {uploadOnCloudinary , deleteOnCloudnary} = require("../../utils/cloudnary.
 //Register API
 exports.register=  async(req , res)=>{
     const {username , email , password} = req.body
-    console.log(username , email , password)
+    // console.log(username , email , password)
          try{
             if( username===""|| email==="" , password ===""){
-                console.log(`Please enter valid inputs`)
+                // console.log(`Please enter valid inputs`)
                 res.status(401).json({message:"Please enter valid inputs"})
             }
             else{
@@ -55,8 +55,8 @@ exports.register=  async(req , res)=>{
                             secure: false, 
                             expires:new Date(Date.now()+25892000000)
                         })
-                      console.log("Cookies Set Sucessfully")
-                      console.log(token)
+                    //   console.log("Cookies Set Sucessfully")
+                    //   console.log(token)
 
 
                       const admin =  await Admin.create({
@@ -74,12 +74,12 @@ exports.register=  async(req , res)=>{
         
             else{
                 res.status(409).json({message :"Email or username  is already registered"})
-                console.log("Email is alreday registered")
+                // console.log("Email is alreday registered")
             }
          }
         }
     catch(err){
-        console.log("Something went wrong")
+        // console.log("Something went wrong")
         res.status(500).json({message:"Something went wrong : " , err})
     }
 }  
@@ -92,7 +92,7 @@ exports.login = async (req, res) => {
 
         const { email, password } = req.body
         if (email === "", password === "") {
-            console.log(`Please enter valid inputs`)
+            // console.log(`Please enter valid inputs`)
             res.status(401).json({ message: "Please enter valid inputs" })
         }
         else {
@@ -139,33 +139,33 @@ exports.login = async (req, res) => {
                                 expires: new Date(Date.now() + 25892000000)
                             })
                         }
-                        console.log("Cookies Set Sucessfully")
+                        // console.log("Cookies Set Sucessfully")
 
                     })
                     const loggedUser = await User.findById(data._id).select("-password")
 
-                    console.log("Login Sucess")
+                    // console.log("Login Sucess")
 
                     // res.redirect("/userPage")
                     res.status(200).json({ message: "Login Sucess !!", loggedUser })
                    
                 }
                 else {
-                    console.log(" Password is Incorrect")
+                    // console.log(" Password is Incorrect")
                     res.status(400).json({ message: " Password is Incorresct" })
 
                 }
             }
 
             else {
-                console.log("Email or Password is Incorresct")
+                // console.log("Email or Password is Incorresct")
                 res.status(400).json({message:"Email or Password is Incorresct"})
 
             }
 
         }
     } catch (error) {
-        console.log(`Something Wrnt Wrong`)
+        // console.log(`Something Wrnt Wrong`)
         res.status(500).json({ message: "Something Wrnt Wrong : " , error })
 
     }
@@ -177,15 +177,15 @@ exports.addDetail = async (req, res) => {
     try {
         const { fullName, address, pincode, age } = req.body
         if (fullName === "" || address === "", pincode === "", age === "") {
-            console.log("All fields are required")
+            // console.log("All fields are required")
             res.status(400).send({ message: "All fields are required" })
         }
         else {
-            console.log(req.details._id)
+            // console.log(req.details._id)
             const registerDetails = await User.findById(req.details._id).select("-password")
-            console.log(registerDetails)
+            // console.log(registerDetails)
             const { username, email } = registerDetails
-            console.log(email)
+            // console.log(email)
 
 
             const data = await addDetail.create({
@@ -198,9 +198,9 @@ exports.addDetail = async (req, res) => {
             })
 
 
-            console.log("Personal Details saved sucessfull !!")
+            // console.log("Personal Details saved sucessfull !!")
             const details = await addDetail.findById(data._id)
-            console.log(data)
+            // console.log(data)
 
 
 
@@ -209,7 +209,7 @@ exports.addDetail = async (req, res) => {
         }
     }
     catch (error) {
-        console.log("Error is Occured : " + error)
+        // console.log("Error is Occured : " + error)
         res.status(500).json({message:"Something went wrong : " , error})
 
     }
@@ -224,7 +224,7 @@ exports.getDetails = async (req, res) => {
         const registerDetails = await User.findById(req.details._id).select("-password")
         const
             { email } = registerDetails
-        console.log(email)
+        // console.log(email)
 
 
         const personalDetails = await addDetail.findOne({ email: email })
@@ -239,7 +239,7 @@ exports.getDetails = async (req, res) => {
 
     }
     catch (error) {
-        console.log("Something went wrong " + error)
+        // console.log("Something went wrong " + error)
         res.status(504).json({message:"Something went wrong : " , error})
 
     }
@@ -255,12 +255,12 @@ exports.updateUsername = async (req, res) => {
 
         const isCheck = await User.findOne({ username: oldUsername })
         if (!isCheck) {
-            console.log("Old Username is not correct ! ! ")
+            // console.log("Old Username is not correct ! ! ")
             res.status(400).json({ message: "Old Username is not correct ! ! " })
         }
         else {
             await User.findByIdAndUpdate(req.details._id, { $set: { username: newUsername } })
-            console.log("Username  Updated sucessfully !!!")
+            // console.log("Username  Updated sucessfully !!!")
             const userDetails  = await  User.findById(req.details._id).select("-password")
             res.status(201).json({ message: "Username  Updated sucessfully !!!" , userDetails })
 
@@ -268,7 +268,7 @@ exports.updateUsername = async (req, res) => {
 
     }
     catch (error) {
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
         res.status(500).json({ message: "Something Went Wrong : ", error })
 
     }
@@ -283,7 +283,7 @@ exports.updateEmail = async (req, res) => {
 
         const isCheck = await User.findOne({ email: oldEmail })
         if (!isCheck) {
-            console.log("Old Email is not correct ! ! ")
+            // console.log("Old Email is not correct ! ! ")
             res.status(400).json({ message: "Old Email is not correct ! ! " })
         }
         else {
@@ -291,7 +291,7 @@ exports.updateEmail = async (req, res) => {
             await Admin.findOneAndUpdate({email:oldEmail} ,  {$set:{email:newEmail}})
             await User.findByIdAndUpdate(req.details._id, { $set: { email: newEmail } })
              
-            console.log("Email  Updated sucessfully !!!")
+            // console.log("Email  Updated sucessfully !!!")
             const userDetails  = await  User.findById(req.details._id).select("-password")
             
             res.status(201).json({ message: "Email  Updated sucessfully !!!" , userDetails })
@@ -300,7 +300,7 @@ exports.updateEmail = async (req, res) => {
 
     }
     catch (error) {
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
         res.status(500).json({ message: "Something Went Wrong : ", error })
 
     }
@@ -322,12 +322,12 @@ exports.updatePassword = async (req, res) => {
         const isCheck = await bcrypt.compare(oldPassword, registerData.password)
 
         if (!isCheck) {
-            console.log("Password is not correct ! ! ")
+            // console.log("Password is not correct ! ! ")
             res.status(400).json({ message: "Password is notcorrect ! ! " })
         }
         else {
             await User.findByIdAndUpdate(req.details._id, { $set: { password: bcrypt.hashSync(newPassword) } })
-            console.log("Password  Updated sucessfully !!!")
+            // console.log("Password  Updated sucessfully !!!")
             const userDetails  = await  User.findById(req.details._id).select("-password")
             res.status(201).json({ message: "Password  Updated sucessfully !!!"  , userDetails})
 
@@ -335,7 +335,7 @@ exports.updatePassword = async (req, res) => {
 
     }
     catch (error) {
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
         res.status(500).json({ message:"Something went wrong : " ,  error })
 
     }
@@ -352,11 +352,11 @@ exports.deleteUser = async (req, res) => {
         const data = await User.findById(req.details._id)
         const UserPassword = data.password
         const isMatched = await bcrypt.compare(password, UserPassword)
-        console.log(isMatched)
+        // console.log(isMatched)
 
         if (!isMatched) {
 
-            console.log(" Username or password is not correct ! ! ")
+            // console.log(" Username or password is not correct ! ! ")
             res.status(200).json({ message: " Username or password is not correct ! ! " })
         }
         else {
@@ -371,7 +371,7 @@ exports.deleteUser = async (req, res) => {
         }
     }
     catch (error) {
-        console.log("Something Went Wrong Error is :  " + error)
+        // console.log("Something Went Wrong Error is :  " + error)
         res.status(500).json({ message: "Something Went Wrong : " , error })
 
     }
@@ -384,12 +384,12 @@ exports.deleteUser = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         res.clearCookie("jwtToken")
-        console.log("Logout Sucess!! ")
+        // console.log("Logout Sucess!! ")
         // res.redirect('/register')
        res.status(201).json({message:"You Have Logout Sucessfully !!"})
         
     } catch (error) {
-        console.log({message:"Something Went Wrong"})
+        // console.log({message:"Something Went Wrong"})
         res.status(500).json({message:"Something went wrong : " , error})
         
     }
@@ -403,33 +403,33 @@ exports.logout = async (req, res) => {
 exports.forgotPassword = async(req , res)=>{
     try{
          const {email} = req.body
-         console.log(email)
+        //  console.log(email)
         const registerData = await User.findOne({email:email})
-        console.log(registerData)
-        console.log(registerData._id)
+        // console.log(registerData)
+        // console.log(registerData._id)
         if(registerData){
            // Generate a random 4-digit number
               function generateOTP() {
                  return Math.floor(Math.random() * 9000) + 1000;
                  }
                  const otp = generateOTP();
-                 console.log(otp)
+                //  console.log(otp)
 
             await  User.updateOne({email:email} ,{$set:{otp:otp}})
             sendResetPasswordMail( email , otp , registerData._id )
-           console.log(registerData._id)
+        //    console.log(registerData._id)
           res.status(201).json({message:"Email Send Sucessfully !!"} )
         //   res.redirect(`/resetPassword?_id=${registerData._id}`)
         }
         else{
-            console.log("Email is not Defined")
+            // console.log("Email is not Defined")
             res.status(300).json({message:" Email is not found !! "})
         }
         
 
     }
     catch(error){
-        console.log("Something Went Wrong : "+ error)
+        // console.log("Something Went Wrong : "+ error)
         res.status(500).json({message:"Something went Wrong : " , error })
 
     }
@@ -439,29 +439,29 @@ exports.forgotPassword = async(req , res)=>{
 //Reset Password API
 exports.resetPassword = async (req , res)=>{
     try {
-        console.log("I am in Reset password API")
+        // console.log("I am in Reset password API")
         const {otp ,newPassword , _id} = req.body
-        console.log(req.query._id) 
+        // console.log(req.query._id) 
         const RegisterUser = await User.findById(_id)
         
         if(!RegisterUser){
-            console.log("User _id or password is not matched")
+            // console.log("User _id or password is not matched")
             res.status(300).json({message:"User _id or password is not matched"})
 
         }
         else{
             if(RegisterUser.otp == otp){
-               console.log("Otp is matched")
+            //    console.log("Otp is matched")
                await User.findByIdAndUpdate(_id , {$set:{password: bcrypt.hashSync(newPassword) , otp:0}})
-               console.log("Below the Update OTP")
+            //    console.log("Below the Update OTP")
                const userRegistered =  await User.findById(_id)
-               console.log("bellow thw find by Id")
-               console.log(userRegistered)
+            //    console.log("bellow thw find by Id")
+            //    console.log(userRegistered)
                res.status(201).json({message:"New password Saved Sucessfully" , userRegistered})
 
             }
             else{
-                console.log("OTP is not correct please try again")
+                // console.log("OTP is not correct please try again")
                 res.status(300).json({message:"OTP is not correct please try again"})
 
             }
@@ -487,22 +487,22 @@ exports.addProfilePicture = async(req , res)=>{
         const registerDetails = await User.findById(req.details._id).select("-password")
         const details = await addDetail.findOne({email:registerDetails.email})
         if(details.image){
-            console.log("You can't add Image becuse image is  alredy added")
+            // console.log("You can't add Image becuse image is  alredy added")
             res.status(300).json({message:"You can't add Image becuse image is  alredy added"})
            
         }
         else{
-            console.log(req.file.path)
+            // console.log(req.file.path)
             const imagePath = req.file.path
             const response =  await uploadOnCloudinary(imagePath)
-            console.log(response.url)
+            // console.log(response.url)
             
         const
             { email } = registerDetails
 
          await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
          const personalDetails = await addDetail.findOne({email:email})
-         console.log(personalDetails)
+        //  console.log(personalDetails)
 
 
             res.status(201).json({ message: 'Profile picture uploaded successfully!'  , personalDetails});
@@ -512,7 +512,7 @@ exports.addProfilePicture = async(req , res)=>{
 
   catch (error) {
         
-        console.log("Something Went Wrong : "+ error)
+        // console.log("Something Went Wrong : "+ error)
         res.status(400).json({message:"Something Went Wrong :" , error})
         
     }
@@ -529,21 +529,22 @@ exports.updateProfilePicture = async(req , res)=>{
         const registerDetails = await User.findById(req.details._id).select("-password")
         const details = await addDetail.findOne({email:registerDetails.email})
         if(!details.image){
-            console.log("You can't update image becuse image is not add yet")
+            // console.log("You can't update image becuse image is not add yet")
             res.status(300).json({message:"You can't update image becuse image is not add yet"})
            
         }
         else{
-            // Logic for extraction 
+            // Logic for extraction publicID from Link URL
         const parts = details.image.split('/');
         const stringAfterLastSlash = parts[parts.length - 1];
         const finalPublicID = stringAfterLastSlash.replace('.jpg', '');
-        console.log(finalPublicID); // Output: x9df9nfagsgp2ydtpd7f
+        // console.log(finalPublicID); // Output: x9df9nfagsgp2ydtpd7f
+
         const deletedImage =  await deleteOnCloudnary(finalPublicID)
-        console.log(deletedImage)
+        // console.log(deletedImage)
         const imagePath = req.file.path
         const response =  await uploadOnCloudinary(imagePath)
-        console.log(response.url)
+        // console.log(response.url)
          
     const
         { email } = registerDetails
@@ -608,8 +609,6 @@ catch (error) {
     
 }
 }
-
-
 
 
 // Credentials 
