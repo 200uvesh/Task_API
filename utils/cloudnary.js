@@ -32,24 +32,17 @@ exports.uploadOnCloudinary = async (localFilePath) => {
 exports.deleteOnCloudnary = async (localFilePath)=>{
     try {
         console.log(localFilePath)
-         cloudinary.uploader.destroy(localFilePath, (error , result)=>{
-            if(error){
-                console.log("Error h yha pr :" , error)
-            }
-            else{
-            console.log(result)
-            }
-         });
-       
+         const result = await cloudinary.uploader.destroy(localFilePath) 
+         console.log("Image Deleted Sucessfully : " , result)
+         return result  
         
     } catch (error) {
         console.log("Something went wrong on deleting image  :"  , error)
         
     }
-
-     
 }
 
+ 
  
  
 // cloudinary.uploader.upload( `cloudinary://${process.env.api_key}:${process.env.api_secret}@${process.env.cloud_name}`,

@@ -534,8 +534,13 @@ exports.updateProfilePicture = async(req , res)=>{
            
         }
         else{
-        console.log(details.image)
-        await deleteOnCloudnary(details.image)
+            // Logic for extraction 
+        const parts = details.image.split('/');
+        const stringAfterLastSlash = parts[parts.length - 1];
+        const finalPublicID = stringAfterLastSlash.replace('.jpg', '');
+        console.log(finalPublicID); // Output: x9df9nfagsgp2ydtpd7f
+        const deletedImage =  await deleteOnCloudnary(finalPublicID)
+        console.log(deletedImage)
         const imagePath = req.file.path
         const response =  await uploadOnCloudinary(imagePath)
         console.log(response.url)
@@ -576,7 +581,14 @@ exports.removeProfilePicture = async(req , res)=>{
            
         }
         else{
-        await deleteOnCloudnary(details.image)
+             
+            const parts = details.image.split('/');
+            const stringAfterLastSlash = parts[parts.length - 1];
+            const finalPublicID = stringAfterLastSlash.replace('.jpg', '');
+            console.log(finalPublicID); // Output: x9df9nfagsgp2ydtpd7f
+       const deletedImage =  await deleteOnCloudnary(finalPublicID)
+
+       console.log(deletedImage+ " I am Here ,  Problem is here ")
       
     const
         { email } = registerDetails
@@ -602,4 +614,5 @@ catch (error) {
 
 // Credentials 
 //export CLOUDINARY_URL=cloudinary://823317268528185:KFufg2IoLMRFBnrDccF0ldJVwa8@doyzrpatw
+
 
