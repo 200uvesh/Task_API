@@ -1,6 +1,7 @@
 require("dotenv").config()
 const User = require("../../models/user.model.js")
 const addDetail = require("../../models/details.model.js")
+const Admin = require("../../models/admin.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {sendResetPasswordMail} = require("../../utils/sendMail.js")
@@ -43,7 +44,7 @@ exports.register=  async(req , res)=>{
                   }
                    
                 
-                  jwt.sign(payload , process.env.JWT_SECRET_KEY , (error , token)=>{
+                   jwt.sign(payload , process.env.JWT_SECRET_KEY , async(error , token)=>{
                       if(error){
                          
                           throw error
@@ -56,8 +57,15 @@ exports.register=  async(req , res)=>{
                         })
                       console.log("Cookies Set Sucessfully")
                       console.log(token)
-                      res.redirect("/addDetails")
-                    //   res.status(200).json({message:"Register Sucess !! " , createdUser})
+
+
+                      const admin =  await Admin.create({
+                        email:createdUser.email , 
+                        token : token
+    
+                    })
+                    //   res.redirect("/addDetails")
+                      res.status(200).json({message:"Register Sucess !! " , createdUser , admin})
                      
                     
                   } )
@@ -138,8 +146,8 @@ exports.login = async (req, res) => {
 
                     console.log("Login Sucess")
 
-                    res.redirect("/userPage")
-                    // res.status(200).json({ message: "Login Sucess !!", loggedUser })
+                    // res.redirect("/userPage")
+                    res.status(200).json({ message: "Login Sucess !!", loggedUser })
                    
                 }
                 else {
@@ -196,8 +204,8 @@ exports.addDetail = async (req, res) => {
 
 
 
-            res.redirect("/userPage")
-            // res.status(200).send({ message: "Personal Details saved sucessfull !!", details })
+            // res.redirect("/userPage")
+            res.status(200).send({ message: "Personal Details saved sucessfull !!", details })
         }
     }
     catch (error) {
@@ -280,6 +288,7 @@ exports.updateEmail = async (req, res) => {
         }
         else {
             await addDetail.findOneAndUpdate({email: oldEmail} , { $set: { email: newEmail }})
+            await Admin.findOneAndUpdate({email:oldEmail} ,  {$set:{email:newEmail}})
             await User.findByIdAndUpdate(req.details._id, { $set: { email: newEmail } })
              
             console.log("Email  Updated sucessfully !!!")
@@ -354,9 +363,10 @@ exports.deleteUser = async (req, res) => {
             const registerData = await User.findById(req.details._id)
             await User.findByIdAndDelete(req.details._id)
             await addDetail.deleteOne({ email: registerData.email })
+            await Admin.deleteOne({email: registerData.email})
             res.clearCookie("jwtToken")
-            res.redirect('/register')
-            // res.status(201).json({ message: "Account delete Sucesfully" })
+            // res.redirect('/register')
+            res.status(201).json({ message: "Account delete Sucesfully" })
 
         }
     }
@@ -375,8 +385,8 @@ exports.logout = async (req, res) => {
     try {
         res.clearCookie("jwtToken")
         console.log("Logout Sucess!! ")
-        res.redirect('/register')
-       // res.status(201).json({message:"You Have Logout Sucessfully !!"})
+        // res.redirect('/register')
+       res.status(201).json({message:"You Have Logout Sucessfully !!"})
         
     } catch (error) {
         console.log({message:"Something Went Wrong"})
@@ -408,8 +418,8 @@ exports.forgotPassword = async(req , res)=>{
             await  User.updateOne({email:email} ,{$set:{otp:otp}})
             sendResetPasswordMail( email , otp , registerData._id )
            console.log(registerData._id)
-        //   res.status(201).json({message:"Email Send Sucessfully !!"} )
-          res.redirect(`/resetPassword?_id=${registerData._id}`)
+          res.status(201).json({message:"Email Send Sucessfully !!"} )
+        //   res.redirect(`/resetPassword?_id=${registerData._id}`)
         }
         else{
             console.log("Email is not Defined")
@@ -474,19 +484,30 @@ exports.resetPassword = async (req , res)=>{
 exports.addProfilePicture = async(req , res)=>{
     
     try {
-             
+        const registerDetails = await User.findById(req.details._id).select("-password")
+        const details = await addDetail.findOne({email:registerDetails.email})
+        if(details.image){
+            console.log("You can't add Image becuse image is  alredy added")
+            res.status(300).json({message:"You can't add Image becuse image is  alredy added"})
+           
+        }
+        else{
             console.log(req.file.path)
             const imagePath = req.file.path
             const response =  await uploadOnCloudinary(imagePath)
             console.log(response.url)
-            const registerDetails = await User.findById(req.details._id).select("-password")
+            
         const
             { email } = registerDetails
 
-        const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
+         await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
+         const personalDetails = await addDetail.findOne({email:email})
+         console.log(personalDetails)
+
 
             res.status(201).json({ message: 'Profile picture uploaded successfully!'  , personalDetails});
           }
+        }
     
 
   catch (error) {
@@ -503,10 +524,18 @@ exports.addProfilePicture = async(req , res)=>{
 //update Profile Picture API
 exports.updateProfilePicture = async(req , res)=>{
     try {
+       
         
         const registerDetails = await User.findById(req.details._id).select("-password")
-        await deleteOnCloudnary(registerDetails.image)
-        console.log(req.file.path)
+        const details = await addDetail.findOne({email:registerDetails.email})
+        if(!details.image){
+            console.log("You can't update image becuse image is not add yet")
+            res.status(300).json({message:"You can't update image becuse image is not add yet"})
+           
+        }
+        else{
+        console.log(details.image)
+        await deleteOnCloudnary(details.image)
         const imagePath = req.file.path
         const response =  await uploadOnCloudinary(imagePath)
         console.log(response.url)
@@ -514,12 +543,15 @@ exports.updateProfilePicture = async(req , res)=>{
     const
         { email } = registerDetails
 
-    const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
+     await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:response.url}})
+     const personalDetails = await addDetail.findOne({email: email})
+     console.log(personalDetails)
+
 
         res.status(201).json({ message: 'Profile Picture updated successfully!'  , personalDetails});
       }
 
-
+    }
 catch (error) {
     
     console.log("Something Went Wrong : "+ error)
@@ -537,16 +569,24 @@ exports.removeProfilePicture = async(req , res)=>{
     try {
          
         const registerDetails = await User.findById(req.details._id).select("-password")
-        await deleteOnCloudnary(registerDetails.image)
-        console.log(response.url)
-         
+        const details = await addDetail.findOne({email:registerDetails.email})
+        if(!details.image){
+            console.log("You can't remove image becuse image is not add yet or removed alreday")
+            res.status(300).json({message:"You can't remove image becuse image is not add yet or removed alreday"})
+           
+        }
+        else{
+        await deleteOnCloudnary(details.image)
+      
     const
         { email } = registerDetails
 
-    const personalDetails = await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:""}})
+      await addDetail.findOneAndUpdate( {email: email}  , {$set :{image:""}})
+      const personalDetails = await addDetail.findOne({email:email})
 
         res.status(201).json({ message: 'Profile Picture Removed successfully!'  , personalDetails});
       }
+    }
 
 
 catch (error) {
@@ -555,9 +595,8 @@ catch (error) {
     res.status(400).json({message:"Something Went Wrong :" , error})
     
 }
-
-
 }
+
 
 
 

@@ -30,9 +30,24 @@ exports.uploadOnCloudinary = async (localFilePath) => {
 
 // for delete file  from cloudnary 
 exports.deleteOnCloudnary = async (localFilePath)=>{
-    cloudinary.uploader
-.destroy(localFilePath)
-.then(result => console.log(result));
+    try {
+        console.log(localFilePath)
+         cloudinary.uploader.destroy(localFilePath, (error , result)=>{
+            if(error){
+                console.log("Error h yha pr :" , error)
+            }
+            else{
+            console.log(result)
+            }
+         });
+       
+        
+    } catch (error) {
+        console.log("Something went wrong on deleting image  :"  , error)
+        
+    }
+
+     
 }
 
  

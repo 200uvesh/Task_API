@@ -6,7 +6,7 @@ const isAuthorised = require("../../middlewares/auth.js")
 
 
 //Routes
-router.post("/register" , register)
+router.post("/register" , register) //DONE
 router.post("/login" , login)
 router.post("/addDetails" ,isAuthorised ,addDetail)
 router.get("/getDetails" , isAuthorised , getDetails)
@@ -21,7 +21,7 @@ router.post("/resetPassword" , resetPassword)
 const upload = require("../../middlewares/upload.js")
 router.post('/addProfilePicture', isAuthorised, upload.single('file') , addProfilePicture )
 router.put('/updateProfilePicture' , isAuthorised ,upload.single('file'), updateProfilePicture)
-router.delete("/removeProfilePicture" , isAuthorised , removeProfilePicture)
+router.delete('/removeProfilePicture' , isAuthorised , removeProfilePicture)
 
 
 

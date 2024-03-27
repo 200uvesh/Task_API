@@ -4,9 +4,9 @@ const jwt= require("jsonwebtoken")
 const verifyToken=async function(req , res , next){
 
    
-    const token = req.cookies.jwtToken 
-   // const token = req.header("Authorization")?.replace("Bearer ", "")  
-  //    console.log(token)
+    // const token = req.cookies.jwtToken 
+   const token = req.header("Authorization")?.replace("Bearer ", "")  
+     console.log(token)
    if(!token){
        return res.status(400).json(
            {
