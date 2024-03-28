@@ -577,7 +577,7 @@ exports.removeProfilePicture = async(req , res)=>{
         const registerDetails = await User.findById(req.details._id).select("-password")
         const details = await addDetail.findOne({email:registerDetails.email})
         if(!details.image){
-            console.log("You can't remove image becuse image is not add yet or removed alreday")
+            // console.log("You can't remove image becuse image is not add yet or removed alreday")
             res.status(300).json({message:"You can't remove image becuse image is not add yet or removed alreday"})
            
         }
@@ -586,10 +586,10 @@ exports.removeProfilePicture = async(req , res)=>{
             const parts = details.image.split('/');
             const stringAfterLastSlash = parts[parts.length - 1];
             const finalPublicID = stringAfterLastSlash.replace('.jpg', '');
-            console.log(finalPublicID); // Output: x9df9nfagsgp2ydtpd7f
+            // console.log(finalPublicID); // Output: x9df9nfagsgp2ydtpd7f
        const deletedImage =  await deleteOnCloudnary(finalPublicID)
 
-       console.log(deletedImage+ " I am Here ,  Problem is here ")
+       //console.log(deletedImage+ " I am Here ,  Problem is here ")
       
     const
         { email } = registerDetails
@@ -604,7 +604,7 @@ exports.removeProfilePicture = async(req , res)=>{
 
 catch (error) {
     
-    console.log("Something Went Wrong : "+ error)
+    //console.log("Something Went Wrong : "+ error)
     res.status(400).json({message:"Something Went Wrong :" , error})
     
 }

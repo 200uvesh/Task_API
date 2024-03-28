@@ -33,9 +33,7 @@ const viewRoute = require("./routes/views/routes.js")
 app.use("/" , viewRoute)
 
 
-// Check 
-// const uploadOnCloudinary = require("./utils/cloudnary.js")
-// uploadOnCloudinary('/home/uvesh/Downloads/Profile1.jpg')
+ 
 
 //listner
 const PORT = process.env.PORT || 6543
@@ -43,4 +41,7 @@ app.listen(PORT ,()=>{
     console.log(` Server  created sucessfully !! http://localhost:${PORT}`)
 })
 
- 
+
+// Check 
+// const uploadOnCloudinary = require("./utils/cloudnary.js")
+// uploadOnCloudinary('/home/uvesh/Downloads/Profile1.jpg')

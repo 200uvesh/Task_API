@@ -6,7 +6,7 @@ const isAuthorised = require("../../middlewares/auth.js")
 
 
 //Routes
-router.post("/register" , register) //DONE
+router.post("/register" , register) 
 router.post("/login" , login)
 router.post("/addDetails" ,isAuthorised ,addDetail)
 router.get("/getDetails" , isAuthorised , getDetails)

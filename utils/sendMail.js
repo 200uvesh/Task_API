@@ -31,16 +31,16 @@ exports.sendResetPasswordMail= async ( email , otp , _id)=>{
 
        transporter.sendMail(mailContent , (error , info)=>{
         if(error){
-            console.log(error)
+            //console.log(error)
         }
         else{
-            console.log("Mail has been sucessfully Send :- " + info.response)
+            //console.log("Mail has been sucessfully Send :- " + info.response)
         }
        })
 
       }
     catch (error) {
-        console.log("Mail Not send")
+        //console.log("Mail Not send")
         res.send("Mail not end")
         
     }

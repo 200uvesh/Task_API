@@ -18,12 +18,12 @@ exports.uploadOnCloudinary = async (localFilePath) => {
             resource_type: "auto"
         })
         // file has been uploaded successfull
-        console.log("file is uploaded on cloudinary ", response.url);
+        //console.log("file is uploaded on cloudinary ", response.url);
         return response;
 
     } catch (error) {
          
-         console.log("Something went Wrong : "+ error)
+         //console.log("Something went Wrong : "+ error)
     }
 }
 
@@ -31,13 +31,13 @@ exports.uploadOnCloudinary = async (localFilePath) => {
 // for delete file  from cloudnary 
 exports.deleteOnCloudnary = async (localFilePath)=>{
     try {
-        console.log(localFilePath)
+       // console.log(localFilePath)
          const result = await cloudinary.uploader.destroy(localFilePath) 
-         console.log("Image Deleted Sucessfully : " , result)
+        // console.log("Image Deleted Sucessfully : " , result)
          return result  
         
     } catch (error) {
-        console.log("Something went wrong on deleting image  :"  , error)
+       // console.log("Something went wrong on deleting image  :"  , error)
         
     }
 }
